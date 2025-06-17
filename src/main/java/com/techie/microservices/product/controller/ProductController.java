@@ -35,4 +35,22 @@ public class ProductController {
     public List<ProductResponse> getAllProducts() {
         return service.getAllProducts();
     }
+
+    @DeleteMapping
+    public ResponseEntity<?> deleteAll(){
+        service.deleteAll();
+        return ResponseEntity.status(HttpStatus.OK).body("All product are deleted !");
+    }
+
+    @GetMapping("/{skuCode}")
+    public ResponseEntity<ProductResponse> findProductBySkuCode( @PathVariable String skuCode){
+        ProductResponse response = service.findBySkuCode(skuCode);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @GetMapping("/exist/{skuCode}")
+    public ResponseEntity<Boolean> isExistBySkuCode(@PathVariable String skuCode){
+        return ResponseEntity.ok(service.isExisteBySkuCode(skuCode));
+    }
+
 }
