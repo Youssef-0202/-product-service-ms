@@ -30,6 +30,12 @@ public class ProductController {
                 .body(service.createProduct(productRequest));
     }
 
+    @PostMapping("/batch")
+    public ResponseEntity<List<ProductResponse>> createProducts(@RequestBody List<ProductRequest> productRequests) {
+        List<ProductResponse> responses = service.createProducts(productRequests);
+        return ResponseEntity.status(HttpStatus.CREATED).body(responses);
+    }
+
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<ProductResponse> getAllProducts() {
@@ -41,6 +47,8 @@ public class ProductController {
         service.deleteAll();
         return ResponseEntity.status(HttpStatus.OK).body("All product are deleted !");
     }
+
+
 
     @GetMapping("/{skuCode}")
     public ResponseEntity<ProductResponse> findProductBySkuCode( @PathVariable String skuCode){

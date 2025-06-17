@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author HP
@@ -34,6 +35,12 @@ public class ProductService {
         log.info("Product {} is saved", product.getId());
 
         return mapToProductResponse(savedProduct);
+    }
+
+    public List<ProductResponse> createProducts(List<ProductRequest> productRequests) {
+        return productRequests.stream()
+                .map(this::createProduct)
+                .collect(Collectors.toList());
     }
 
     public List<ProductResponse> getAllProducts() {
