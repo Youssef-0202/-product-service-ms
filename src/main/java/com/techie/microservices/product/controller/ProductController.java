@@ -13,7 +13,7 @@ import java.util.List;
  * @author HP
  **/
 @RestController
-@RequestMapping("/api/product/")
+@RequestMapping("/api/product")
 public class ProductController {
 
     private final ProductService service;
