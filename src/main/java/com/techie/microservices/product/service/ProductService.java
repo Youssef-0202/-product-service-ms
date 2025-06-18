@@ -1,7 +1,9 @@
 package com.techie.microservices.product.service;
 
+import com.mongodb.DuplicateKeyException;
 import com.techie.microservices.product.dto.ProductRequest;
 import com.techie.microservices.product.dto.ProductResponse;
+import com.techie.microservices.product.exception.ProductAlreadyExistsException;
 import com.techie.microservices.product.exception.ProductNotFoundException;
 import com.techie.microservices.product.model.Product;
 import com.techie.microservices.product.repository.ProductRepository;
@@ -31,10 +33,15 @@ public class ProductService {
                 .skuCode(productRequest.skuCode())
                 .build();
 
-        Product savedProduct = repository.save(product);
-        log.info("Product {} is saved", product.getId());
+        if(isExisteBySkuCode(product.getSkuCode())){
+            log.error("DuplicateKeyException intercepted: {}");
+            throw new ProductAlreadyExistsException(product.getSkuCode());
+        }else {
+            Product savedProduct = repository.save(product);
+            log.info("Product {} is saved", savedProduct.getId());
+            return mapToProductResponse(savedProduct);
+        }
 
-        return mapToProductResponse(savedProduct);
     }
 
     public List<ProductResponse> createProducts(List<ProductRequest> productRequests) {
